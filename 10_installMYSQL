@@ -1,0 +1,44 @@
+#!/bin/bash
+
+USERID=$(id -u)
+
+#echo "user ID is $USERID"
+
+if[ $USERID -ne 0 ]
+then
+    echo "run this script with admin rights"
+    exit 1
+fi
+
+dnf list installed git
+
+if[ $? -ne 0 ]
+then
+    echo "git is not installed, going to install it"
+    dnf install git -y
+    if [ $? -ne 0 ]
+    then
+        echo "git installation is failed check the error"
+        exit 1
+    else
+        echo "git installation is success"
+else
+    echo "git is already installed, nothing to do"
+fi
+
+dnf list installed mysql
+
+if [ $? -ne 0 ]
+then
+    echo "mysql is not installed, going to install"
+    dnf install mysql -y
+    if [ $? -ne 0 ]
+    then
+        echo "mysql installation is failed, check the logs"
+        exit 1
+    else
+        echo "mysql installation is success"
+    fi
+else
+    echo "My sql is already installed"
+fi
